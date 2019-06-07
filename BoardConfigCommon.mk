@@ -55,9 +55,6 @@ BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image
 # Platform
 TARGET_BOARD_PLATFORM := msm8998
 
-# ANT+
-BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
-
 # Assert
 TARGET_BOARD_INFO_FILE := $(PLATFORM_PATH)/board-info.txt
 
@@ -147,6 +144,7 @@ USE_DEVICE_SPECIFIC_GPS := true
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 
 # HIDL
+DEVICE_FRAMEWORK_MANIFEST_FILE := $(PLATFORM_PATH)/framework_manifest.xml
 DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
 
@@ -179,6 +177,7 @@ TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_UI_BLANK_UNBLANK_ON_INIT := true
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
 # Releasetools
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
@@ -197,6 +196,11 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/vendor
 BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/public
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(PLATFORM_PATH)/sepolicy/private
+
+# System as root
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+BOARD_KERNEL_CMDLINE += skip_initramfs rootwait ro init=/init root=/dev/dm-0
+BOARD_KERNEL_CMDLINE += dm=\"system none ro,0 1 android-verity /dev/sde43\"
 
 # Treble
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
